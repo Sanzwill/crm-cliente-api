@@ -1,7 +1,7 @@
 const express = require("express")
 const morgan = require("morgan")
 const  cors = require("cors")
-const config = require("s")
+const config = require("./config/index")
 const productRoutes = require("./routes/productos.routes")
 const customerRoutes = require("./routes/customer.routes")
 const DBConnection = require("./database/DBConnection")
@@ -33,7 +33,7 @@ app.get("/", (req, res) =>{
 
  const PORT = 4800;
 
- app.listen(PORT, ()=>{
+ app.listen(config.port, ()=>{
 console.log(`server listo en http://localhost:${PORT}`);
  
 } )
