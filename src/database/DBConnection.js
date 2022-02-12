@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const DBConnection = a
-const url = " mongodb://127.0.0.1:27017/crm-clientes";
+const url = " mongodb+srv://hugowil:TIu6kFITY78BT1R2@curso-mongodb.rknaw.mongodb.net/crm-clientes";
 
 const DBConnection = async ()=>{
 
