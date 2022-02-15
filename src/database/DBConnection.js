@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-
+const uri = "mongodb://localhost:27017/crm-clientes";
 
 const config = require("../config/index")
 const DBConnection = async ()=>{

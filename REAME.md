@@ -1,3 +1,3 @@
 
 Curso de MongoDBS
-# mi nombre: es hugo sanchez
+# mi nombre: es Hugo sanchez Encalada
