@@ -1,4 +1,4 @@
-const Product = require("../schemas/product.js");
+const Product = require("../schemas/Product");
 
 const getProducts = async (req, res) => {
     try{

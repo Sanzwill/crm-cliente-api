@@ -1,9 +1,9 @@
-import { Router } from "express";
+// const { Router } = require("express");
 
 
-// const { Router } = require('express');
+ const { Router } = require('express');
 
-const { getCustomer, createCustomer, updateCustomer, deleteCustomer } = require('../controllers/customer.controller')
+const { getCustomers, createCustomer, updateCustomer, deleteCustomer } = require('../controllers/customer.controller')
 
 const router = Router()
 

@@ -1,11 +1,12 @@
-const { Schema, model } =  require("mongoose")
+const { Schema, model } =  require('mongoose');
+// const mongoosePaginate = require('mongoosePaginate');
+
 
 const ProductSchema = new Schema({
     name: {
         type: String,
         required: true,
-        uppercase: true,
-        trim: true
+        
     },
     stock: {
         type: Number,
@@ -19,6 +20,7 @@ const ProductSchema = new Schema({
 {
     timestamps: true,
     versionKey: false
-})
+});
 
-module.exports = model('Product', ProductSchema, 'Products')
+// ProductSchema.plugin(mongoosePaginate);
+module.exports = model('Product', ProductSchema, 'Products');

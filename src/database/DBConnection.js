@@ -1,18 +1,15 @@
-const mongoose = require("mongoose")
-const uri = "mongodb://localhost:27017/crm-clientes";
+const mongoose = require('mongoose');
 
-const config = require("../config/index")
-const DBConnection = async ()=>{
+const config = require('../config');
 
-    try{
-        await mongoose.connect(config.mongoUri);
-    console.log('DB is connection');
-    }catch (error){
-        console.log(error)
-        throw new Error('failed to initialise database')
-    }
-
+const DBConnection = async () => {
+	try {
+		await mongoose.connect(config. mongoUri);
+		console.log('DB is connected');
+	} catch (error) {
+		console.log(error);
+		throw new Error('Failed to initialize database');
+	}
 };
-
 
 module.exports = DBConnection;

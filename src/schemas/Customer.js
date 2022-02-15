@@ -1,35 +1,28 @@
-const {Schema, model} = require("mongoose");
+const { Schema, model } = require('mongoose');
 
-const CustomerSchema = new Schcema ({
-   
-         name:{
-             type: String, 
-             require: true,
-            //  trim: true,
-            //  maxlength:
-             
+const CustomerSchema = new Schema(
+	{
+		name: {
+			type: String,
+			required: true,
+		},
+		email: {
+			type: String,
+			unique: true,
+			required: true,
+		},
+		company: {
+			type: String,
+			required: true,
+		},
+		phone: {
+			type: String,
+		},
+	},
+	{
+		timestamps: true,
+		versionKey: false,
+	}
+);
 
-         },
-         email:{
-             typr:String,
-             unique: true,
-             require: true,
-            
-
-         },
-         company:{
-             type: String,
-            require: true,
-            
-                 },
-                
-
-                phone:{
-                    type: String,
-                    require: true,
-                  
-                        },
-
-
-});
- module.exports = model ('Customer', CustomerSchema, "Customers")
+module.exports = model('Customer', CustomerSchema, 'Customers');

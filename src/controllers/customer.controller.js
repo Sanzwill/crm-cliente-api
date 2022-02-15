@@ -1,95 +1,134 @@
-const Customer  = require("../schemas/Customer.js");
+const Customer = require('../schemas/Customer');
 
-const getCustomer  = async (req, res) => {
-    try{
-           const {search }= req,query
-           const regex  = new RegExp(search, "i");
-           console.log(regex)
-           const customer  = await Customer .find ({
-             $or:[{name: regex}, {email:regex}, {company: regex}],
-           }).limit(limit).sort({name: 'desc'});
-        
-       return res.status(202).json({
-        ok: true,
-        message: 'se ha credo en customer ',
-        customer,
-       })
-    }catch(error){
-        console.log(error);
-        return res.status(500).json({
-            ok: false,
-            message: "Ocurrio un error"
-       })
-    }
+const getCustomers = async (req, res) => {
+	try {
+		const { search, limit } = req.query;
+
+		const regex = new RegExp(search, 'i');
+
+		const customers = await Customer.find({
+			$or: [{ name: regex }, { email: regex }, { company: regex }],
+		})
+			.limit(limit)
+			.sort({ name: 1 });
+
+		return res.status(200).json({
+			ok: true,
+			message: '',
+			customers,
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			ok: false,
+			message: 'Ocurrio un error con el servidor',
+		});
+	}
 };
 
 const createCustomer = async (req, res) => {
-    try{
-        const { nombre, email, price } = req.body;
+	try {
+		const { name, email, company, phone } = req.body;
 
-        const newCustomer =  new Customer({customer})
+		const customerExistsWithEmail = await Customer.exists({ email });
 
-        const CustomerSaved =  await newCustomer.save()
+		if (customerExistsWithEmail)
+			return res.status(404).json({
+				ok: false,
+				message: 'El correo electrónico ya se encuentra registrado',
+			});
 
-       return res.status(202).json({
-            ok: true,
-            message: "Customer guardado",
-            Customer: CustomerSaved
-       })
-    }catch(error){
-        console.log(error);
-        return res.status(500).json({
-            ok: false,
-            message: "Ocurrio un error al crear"
-       })
-    }
+		const newCustomer = new Customer({ name, email, company, phone });
+
+		const customerSaved = await newCustomer.save();
+
+		return res.status(200).json({
+			ok: true,
+			message: 'Cliente creado con éxito',
+			customer: customerSaved,
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			ok: false,
+			message: 'Ocurrio un error con el servidor',
+		});
+	}
 };
 
 const updateCustomer = async (req, res) => {
-    try{
-        const { CustomerId, customer } = req.body;
+	try {
+		const { id, name, email, company, phone } = req.body;
 
+		const customerExists = await Customer.findOne({ _id: id });
 
-       const customerUpdated = await Customer.findByIdAndUpdate(
-        id,
-        {
-            $set: {nombre, email, company, phone}
-        },
-       {_id: CustomerId}
-       );
+		if (!customerExists)
+			return res.status(404).json({
+				ok: false,
+				message: 'No existe el cliente',
+			});
 
-       return res.status(202).json({
-            ok: true,
-            message: " customer actualizado",
-            customer: customerUpdated
-       })
-    }catch(error){
-        console.log(error);
-        return res.status(500).json({
-            ok: false,
-            message: "Ocurrio un error"
-       })
-    }
+		const customerExistsWithEmail = await Customer.exists({ email });
+
+		if (customerExistsWithEmail)
+			return res.status(404).json({
+				ok: false,
+				message: 'El correo electrónico ya se encuentra registrado',
+			});
+
+		const customerUpdated = await Customer.findByIdAndUpdate(
+			id,
+			{
+				$set: { name, email, company, phone },
+			},
+			{ new: true }
+		);
+
+		return res.status(200).json({
+			ok: true,
+			message: 'Cliente actualizado con éxito',
+			customer: customerUpdated,
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			ok: false,
+			message: 'Ocurrio un error con el servidor',
+		});
+	}
 };
 
-const deleteCustomer= async  (id) => {
-    try{
-        const { clientId } = id
-       
-       const CustomerDeleted = await Customer.deleteOne({_id:CustomerId})
+const deleteCustomer = async (req, res) => {
+	try {
+		const { id } = req.body;
 
-       return res.status(200).json({
-            ok: true,
-            message: "Producto Elimindo",
-            product: {_id:clientId }
-       })
-    }catch(error){
-        console.log(error);
-        return res.status(500).json({
-            ok: false,
-            message: "Customer eliminado con exito",
-       })
-    }
+		const customerExists = await Customer.exists({ _id: id });
+
+		if (!customerExists)
+			return res.status(404).json({
+				ok: false,
+				message: 'No existe el cliente',
+			});
+
+		const customerDeleted = await Customer.deleteOne({ _id: id });
+
+		return res.status(200).json({
+			ok: true,
+			message: 'Cliente eliminado con éxito',
+			customer: { _id: id, ...customerDeleted },
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			ok: false,
+			message: 'Ocurrio un error con el servidor',
+		});
+	}
 };
 
-module.exports = {getCustomer , createCustomer, updateCustomer, deleteCustomer}
+module.exports = {
+	getCustomers,
+	createCustomer,
+	updateCustomer,
+	deleteCustomer,
+};

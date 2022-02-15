@@ -1,10 +1,10 @@
-const express = require("express")
-const morgan = require("morgan")
-const  cors = require("cors")
-const config = require("./config/index")
-const productRoutes = require("./routes/productos.routes")
-const customerRoutes = require("./routes/customer.routes")
-const DBConnection = require("./database/DBConnection")
+const express = require('express');
+const morgan = require("morgan");
+const  cors = require("cors");
+const config = require("./config/index");
+const productRoutes = require('./routes/productos.routes');
+const customerRoutes = require('./ routes/customer.routes');
+const DBConnection = require('./database/DBConnection');
 
 // camel case funcion para definir la constante por StartExpressServer
    async function starExpressServer(params){
@@ -31,14 +31,18 @@ app.get("/", (req, res) =>{
     await DBConnection();
 
 
- const PORT = 4800;
+//  const PORT = 4000;
 
- app.listen(config.port, ()=>{
-console.log(`server listo en http://localhost:${PORT}`);
+//  app.listen(config.port, ()=>{
+// console.log(`server listo en http://localhost:${PORT}`);
  
-} )
+// } )
+app.listen(config.port, () => {
+   console.log(`Server listo en http://localhost:${config.port}`);
+});
+}
 
-   }
+   
    startExpressServer()
 
    
